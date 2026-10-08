@@ -28,7 +28,7 @@ check_commands() {
   test -f .opencode/skills/board/SKILL.md || return 1
   test -f .opencode/agents/ultraworker.md || return 1
 
-  for command in status run lint recap; do
+  for command in status run lint recap view; do
     test -f ".opencode/commands/board/$command.md" || return 1
   done
 }
