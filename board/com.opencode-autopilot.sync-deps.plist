@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.opencode-board.sync-deps</string>
+    <string>com.opencode-autopilot.sync-deps</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -28,8 +28,8 @@
     <integer>0</integer>
   </dict>
   <key>StandardOutPath</key>
-  <string>__HOME__/Library/Logs/opencode-board-sync.log</string>
+  <string>__HOME__/Library/Logs/opencode-autopilot-sync.log</string>
   <key>StandardErrorPath</key>
-  <string>__HOME__/Library/Logs/opencode-board-sync.log</string>
+  <string>__HOME__/Library/Logs/opencode-autopilot-sync.log</string>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 #!/bin/bash
 # board/sync-deps.sh --check | --apply [--yes]
-# Keeps opencode-board on the latest versions recorded in board/versions.json.
+# Keeps opencode-autopilot on the latest versions recorded in board/versions.json.
 # --check is read-only and advisory: it never fails on missing tools or
 # network (prints WARN, exits 0) so board/validate.sh can call it safely.
 # --apply refreshes the opencode plugin cache for oh-my-openagent so the next

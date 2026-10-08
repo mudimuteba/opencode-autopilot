@@ -11,7 +11,7 @@ set -euo pipefail
 repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repo_root"
 
-label="com.opencode-board.sync-deps"
+label="com.opencode-autopilot.sync-deps"
 target_dir="$HOME/Library/LaunchAgents"
 target="$target_dir/$label.plist"
 uid_now="$(id -u)"
@@ -30,7 +30,7 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 mkdir -p "$target_dir"
-python3 - "$repo_root/board/com.opencode-board.sync-deps.plist" "$target" "$repo_root" "$HOME" <<'EOF'
+python3 - "$repo_root/board/com.opencode-autopilot.sync-deps.plist" "$target" "$repo_root" "$HOME" <<'EOF'
 import sys
 src, dest, root, home = sys.argv[1:5]
 with open(src, encoding="utf-8") as handle:
