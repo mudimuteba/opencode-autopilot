@@ -26,6 +26,7 @@ check_render() {
 
 check_commands() {
   test -f .opencode/skills/board/SKILL.md || return 1
+  test -f .opencode/agents/ultraworker.md || return 1
 
   for command in status run lint recap; do
     test -f ".opencode/commands/board/$command.md" || return 1
@@ -42,7 +43,12 @@ check_hooks() {
 
 check_configs() {
   python3 -c 'import json, sys; [json.load(open(path, encoding="utf-8")) for path in sys.argv[1:]]' \
-    opencode.json board/config.json
+    opencode.json board/config.json board/versions.json
+}
+
+check_deps() {
+  # Advisory only: sync-deps.sh --check always exits 0 (offline-safe).
+  bash board/sync-deps.sh --check || true
 }
 
 if check_store; then pass store; else fail store; fi
@@ -51,3 +57,4 @@ if check_commands; then pass commands; else fail commands; fi
 if check_gate; then pass gate; else fail gate; fi
 if check_hooks; then pass hooks; else fail hooks; fi
 if check_configs; then pass configs; else fail configs; fi
+if check_deps; then pass deps; else fail deps; fi

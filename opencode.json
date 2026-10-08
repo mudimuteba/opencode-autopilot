@@ -8,5 +8,8 @@
       ".opencode/skills"
     ]
   },
-  "command": {}
+  "command": {},
+  "plugin": [
+    "oh-my-openagent"
+  ]
 }

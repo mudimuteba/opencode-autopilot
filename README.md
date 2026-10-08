@@ -45,3 +45,24 @@ git commit -m "Initial publish"
 git branch -M main
 git push -u origin main
 ```
+
+## Worker
+
+The project's worker is **Sisyphus**, provided by the `oh-my-openagent`
+plugin declared in `opencode.json` (upstream
+`code-yeongyu/oh-my-openagent`). `.opencode/agents/ultraworker.md` records
+the working contract and defers to the plugin — the prompt is never forked
+here, so the worker cannot go stale.
+
+## Dependency freshness
+
+`board/versions.json` records the last verified version of every dependency
+with policy `latest`:
+
+```sh
+bash board/sync-deps.sh --check   # read-only drift report (offline-safe)
+bash board/sync-deps.sh --apply --yes  # refresh plugin cache, then restart opencode
+```
+
+`board/validate.sh` runs the check on every pass and warns on drift without
+failing. After `--apply`, update the `verified` pin in `board/versions.json`.

@@ -1,0 +1,26 @@
+{
+  "policy": "latest — every entry tracks its upstream's newest release. board/sync-deps.sh --check reports drift (advisory), --apply refreshes.",
+  "updated": "2026-10-08",
+  "deps": {
+    "oh-my-openagent": {
+      "spec": "oh-my-openagent",
+      "verified": "4.19.4",
+      "source": "npm",
+      "upstream": "https://github.com/code-yeongyu/oh-my-openagent",
+      "provides": [
+        "Sisyphus primary orchestrator (the ultraworker)",
+        "oracle / librarian / explore specialist agents",
+        "category-based task routing"
+      ]
+    },
+    "opencode": {
+      "min_known": "1.0.150",
+      "source": "https://opencode.ai",
+      "note": "minimum required by the plugin installer at the time of writing; newer is fine"
+    },
+    "python": {
+      "min": "3.9",
+      "note": "standard library only — board scripts install no packages"
+    }
+  }
+}
