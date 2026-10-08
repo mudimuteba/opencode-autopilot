@@ -38,7 +38,10 @@ check_gate() {
 }
 
 check_hooks() {
-  grep -q PreToolUse .opencode/hooks/hooks.yaml
+  test -f .opencode/plugin/board.js || return 1
+  grep -q 'tool.execute.before' .opencode/plugin/board.js || return 1
+  node --check .opencode/plugin/board.js || return 1
+  grep -qF '"*.env": "deny"' opencode.json || return 1
 }
 
 check_configs() {

@@ -58,6 +58,15 @@ cmd_apply() {
     printf 'REFUSED: --apply needs --yes (would remove %s)\n' "$CACHE_DIR" >&2
     exit 1
   fi
+  if command -v pgrep >/dev/null 2>&1; then
+    others="$(pgrep -f opencode 2>/dev/null | grep -vx "$$" | grep -vx "$PPID" || true)"
+    if [ -n "$others" ]; then
+      printf 'REFUSED: opencode processes running — refusing mid-session refresh (restart opencode, then re-run)\n' >&2
+      exit 1
+    fi
+  else
+    printf 'WARN: pgrep missing — cannot confirm no live session; proceeding\n'
+  fi
   rm -rf "$CACHE_DIR"
   printf 'OK: plugin cache cleared — restart opencode to re-resolve latest, then run --check\n'
 }

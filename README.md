@@ -66,3 +66,25 @@ bash board/sync-deps.sh --apply --yes  # refresh plugin cache, then restart open
 
 `board/validate.sh` runs the check on every pass and warns on drift without
 failing. After `--apply`, update the `verified` pin in `board/versions.json`.
+
+## Automation
+
+Three pieces keep the repo on latest without hand-holding:
+
+```sh
+bash board/install-launchd.sh            # weekly refresh, Sundays 04:00 (macOS)
+bash board/install-launchd.sh --uninstall
+```
+
+- **Weekly refresh.** The launchd agent runs `sync-deps.sh --apply --yes`
+  outside sessions. `--apply` refuses while opencode processes run (pgrep
+  guard), so a scheduled refresh only takes effect on the next opencode start.
+- **Startup marker.** `.opencode/plugin/board.js` (native, auto-discovered —
+  no extra dependency) compares the cached worker against the verified pin at
+  session start and writes `dist/.freshness`, which `/board status` prints.
+- **Native guards.** The same plugin enforces the three Bash guards
+  (`rm` outside the repo, force-push to `main`, `.env` reads) by throwing in
+  `tool.execute.before`, and `opencode.json` declares the `.env` read deny in
+  `permission`. The old `.opencode/hooks/hooks.yaml` is retired: that format
+  only executes with the third-party OpenCode-Hooks runtime, which this repo
+  does not require.
