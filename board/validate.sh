@@ -15,7 +15,7 @@ fail() {
 }
 
 check_store() {
-  python3 -m py_compile board/store.py board/render.py &&
+  python3 -m py_compile board/store.py board/render.py board/collect.py &&
     python3 board/store.py list >/dev/null
 }
 

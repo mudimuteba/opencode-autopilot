@@ -102,3 +102,18 @@ bash board/install-launchd.sh --uninstall
   (`rm` outside the repo, force-push to `main`, `.env` reads) by throwing in
   `tool.execute.before`, and `opencode.json` declares the `.env` read deny in
   `permission`.
+
+## Collector
+
+`board/collect.py` turns a repo's `TODO.md` (`## ` sections, optional
+``— `S|M|L` `` effort markers) into board cards. Dry-run by default, dedupes
+by title on apply:
+
+```sh
+python3 board/collect.py --from /path/to/repo/TODO.md --lane Ops
+python3 board/collect.py --from /path/to/repo/TODO.md --lane Ops --apply --to /tmp/trial.jsonl
+python3 board/render.py --in /tmp/trial.jsonl --out /tmp/trial.html
+```
+
+Provenance lands in each card's `evidence` (`TODO.md section N (effort)`),
+so the board shows where every card came from.
