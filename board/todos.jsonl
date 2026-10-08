@@ -1,0 +1,3 @@
+{"closed": null, "created": "2026-01-01T00:00:00+00:00", "evidence": "README.md", "head_sha": "", "id": "sample-001", "lane": "Product", "status": "Backlog", "title": "Define the first board milestone"}
+{"closed": null, "created": "2026-01-01T00:00:00+00:00", "evidence": "board/store.py", "head_sha": "", "id": "sample-002", "lane": "Engineering", "status": "Building", "title": "Implement the JSONL todo store"}
+{"closed": null, "created": "2026-01-01T00:00:00+00:00", "evidence": "python3 board/store.py list", "head_sha": "", "id": "sample-003", "lane": "Quality", "status": "Ready", "title": "Verify the seeded board"}

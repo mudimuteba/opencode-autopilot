@@ -1,0 +1,57 @@
+hooks:
+  PreToolUse:
+    - matcher: Bash
+      hooks:
+        - type: command
+          command: |
+            python3 -c '
+            import json
+            import os
+            import re
+            import shlex
+            import sys
+
+            payload = json.load(sys.stdin)
+            tool_input = payload.get("tool_input") or payload.get("input") or {}
+            command = tool_input.get("command", "")
+            root = os.path.realpath(os.getcwd())
+
+            try:
+                lexer = shlex.shlex(command, posix=True, punctuation_chars=";&|")
+                lexer.whitespace_split = True
+                tokens = list(lexer)
+            except ValueError:
+                print("BLOCKED: Bash command could not be parsed safely", file=sys.stderr)
+                raise SystemExit(2)
+
+            separators = {";", "&&", "||", "|", "&"}
+            for index, token in enumerate(tokens):
+                if os.path.basename(token) != "rm":
+                    continue
+                for target in tokens[index + 1:]:
+                    if target in separators:
+                        break
+                    if target.startswith("-"):
+                        continue
+                    resolved = os.path.realpath(os.path.join(root, target)) if not os.path.isabs(target) else os.path.realpath(target)
+                    try:
+                        inside = os.path.commonpath([root, resolved]) == root
+                    except ValueError:
+                        inside = False
+                    if not inside:
+                        print("BLOCKED: rm target is outside the repository", file=sys.stderr)
+                        raise SystemExit(2)
+
+            force_push = re.search(r"(?:^|[;&|]\s*)git\s+push\b", command) and re.search(r"(?:^|\s)--force(?:-with-lease)?(?:=\S+)?(?:\s|$)|(?:^|\s)-[^\s]*f[^\s]*(?:\s|$)", command)
+            pushes_main = re.search(r"(?:^|\s)(?:refs/heads/)?main(?::(?:refs/heads/)?main)?(?:\s|$)", command)
+            if force_push and pushes_main:
+                print("BLOCKED: force-push to main is not allowed", file=sys.stderr)
+                raise SystemExit(2)
+
+            readers = {"cat", "less", "more", "head", "tail", "grep", "egrep", "fgrep", "sed", "awk", "source", "."}
+            reads_env = any(os.path.basename(token) in readers for token in tokens)
+            names_env = any(re.search(r"(?:^|/)\.env(?:\.[^/]*)?$", token) for token in tokens)
+            if reads_env and names_env:
+                print("BLOCKED: reading .env files through Bash is not allowed", file=sys.stderr)
+                raise SystemExit(2)
+            '

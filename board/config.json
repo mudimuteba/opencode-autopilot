@@ -1,0 +1,8 @@
+{
+  "verify_commands": [
+    "python3 -m py_compile board/store.py",
+    "python3 board/store.py list"
+  ],
+  "base_branch": "main",
+  "merge_policy": "review-required"
+}
