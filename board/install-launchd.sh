@@ -41,8 +41,8 @@ with open(dest, "w", encoding="utf-8") as handle:
 EOF
 
 launchctl bootstrap "gui/$uid_now" "$target" 2>/dev/null \
-  || launchctl load -w "$target"
-if launchctl list 2>/dev/null | grep -q "$label"; then
+  || launchctl load -w "$target" 2>/dev/null || true
+if launchctl print "gui/$uid_now/$label" >/dev/null 2>&1; then
   printf 'OK: %s installed (Sundays 04:00)\n' "$label"
 else
   printf 'FAIL: agent not listed after load\n' >&2
