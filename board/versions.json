@@ -4,7 +4,7 @@
   "deps": {
     "oh-my-openagent": {
       "spec": "oh-my-openagent",
-      "verified": "4.19.4",
+      "verified": "5.1.27",
       "source": "npm",
       "upstream": "https://github.com/code-yeongyu/oh-my-openagent",
       "provides": [
